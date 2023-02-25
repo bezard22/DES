@@ -1,0 +1,9 @@
+table, tr, th, td {
+    border: 1px solid var(--text-color);
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.vertCell {
+    transform: rotate(-90deg);
+}

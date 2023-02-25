@@ -205,6 +205,15 @@ class DES:
     def decrypt(y, k):
         pass
 
+
+def call(action, encoding, inText, key):
+    des = DES()
+    if action == "encrypt":
+        x = BitArray(length=64)
+        k = BitArray(length=64)
+        des.encrypt(x, k)
+    return des.data
+
 if __name__ == "__main__":
     x = BitArray(length=64)
     k = BitArray(length=64)

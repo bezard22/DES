@@ -1,0 +1,115 @@
+<section>
+    <div>
+        <select name="action" id="action">
+            <option value="encrypt">Encrypt</option>
+            <option value="decrypt">Decrypt</option>
+        </select>
+        
+        <select name="encoding" id="encoding">
+            <option value="bin">Binary</option>
+            <option value="hex">Hexadecimal</option>
+            <option value="dec">Decimal</option>
+        </select>
+    </div>
+    <div>
+        <label for="inText">Plaintext x:</label>
+        <input type="text" name="inText" id="inText">
+        <br>
+        <label for="key">Key k:</label>
+        <input type="text" name="key" id="key">
+    </div>
+    <button onclick="test()">Encrypt</button>
+    <div id="output">
+        <table>
+            <tr>
+                <td colspan="12">DES Encryption</td>
+            </tr>
+            <tr>
+                <td colspan="9">Encryption Path</td>
+                <td colspan="3">Key Schedule</td>
+            </tr>
+            <tr>
+                <td rowspan="4"></td>
+                <td colspan="8">Plaintext x</td>
+                <td rowspan="4"></td>
+                <td colspan="2">Key k</td>
+            </tr>
+            <tr>
+                <td colspan="8" id="tab_x"></td>
+                <td colspan="2" id="tab_k"></td>
+            </tr>
+            <tr>
+                <td colspan="8">Initial Permutation IP</td>
+                <td colspan="2">Initial Key Permutation PC-1</td>
+            </tr>
+            <tr>
+                <td colspan="8" id="tab_IP"></td>
+                <td colspan="2" id="tab_PC1"></td>
+            </tr>
+            <!-- Round 1 -->
+            <tr>
+                <td rowspan="11" class="vertCell">Round 1</td>
+                <td colspan="4">L0</td>
+                <td colspan="4">R0</td>
+                <td rowspan="11" class="vertCell">Transform 1</td>
+                <td>C0</td>
+                <td>D0</td>
+            </tr>
+            <tr>
+                <td colspan="4" id="tab_L0"></td>
+                <td colspan="4" id="tab_R0"></td>
+                <td id="tab_C0"></td>
+                <td id="tab_D0"></td>
+            </tr>
+            <tr>
+                <td colspan="8">fbox</td>
+                <td>LS1</td>
+                <td>LS1</td>
+            </tr>
+            <tr>
+                <td colspan="8">Expansion E</td>
+                <td id="tab_LSC1"></td>
+                <td id="tab_LSD1"></td>
+            </tr>
+            <tr>
+                <td colspan="8" id="tab_E1"></td>
+                <td colspan="2">Round key Permutation PC-2</td>
+            </tr>
+            <tr>
+                <td colspan="8">E XOR k1</td>
+                <td colspan="2" id="tab_PC21"></td>
+            </tr>
+            <tr>
+                <td colspan="8" id="tab_EXor1"></td>
+                <td colspan="2" rowspan="5"></td>
+            </tr>
+            <tr>
+                <td>s1</td>
+                <td>s2</td>
+                <td>s3</td>
+                <td>s4</td>
+                <td>s5</td>
+                <td>s6</td>
+                <td>s7</td>
+                <td>s8</td>
+            </tr>
+            <tr>
+                <td id="tab_s11"></td>
+                <td id="tab_s12"></td>
+                <td id="tab_s13"></td>
+                <td id="tab_s14"></td>
+                <td id="tab_s15"></td>
+                <td id="tab_s16"></td>
+                <td id="tab_s17"></td>
+                <td id="tab_s18"></td>
+            </tr>
+            <tr>
+                <td colspan="8">Permutation P</td>
+            </tr>
+            <tr>
+                <td colspan="8" id="tab_P1"></td>
+            </tr>
+        </table>
+    </div>    
+</section>
+<hr>
