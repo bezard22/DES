@@ -37,12 +37,16 @@ function tableFill(data) {
         ["R0", data.R[0]],
         ["C0", data.C[0]],
         ["D0", data.D[0]],
-        // ["LSC1", data.],
-        // ["LSD1", data.],
+        ["LSC1", data.C[1]],
+        ["LSD1", data.D[1]],
         ["E1", data.E[0]],
         ["PC21", data.ki[0]],
-        ["EXor1", data.EXor[0]]
+        ["EXor1", data.EXor[0]],
+        ["P1", data.F[0]]
     ]
+    for (let i = 0; i < 8; i++) {
+        mapping.push([`s1${i+1}`, data.S[1][i]])
+    }
     for (let i = 0; i < mapping.length; i++) {
         d3.select(`#tab_${mapping[i][0]}`).text(mapping[i][1])    
     }
