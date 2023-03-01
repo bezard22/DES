@@ -33,20 +33,27 @@ function tableFill(data) {
         ["k", data.k],
         ["IP", data.IP],
         ["PC1", data.PC1],
-        ["L0", data.L[0]],
-        ["R0", data.R[0]],
-        ["C0", data.C[0]],
-        ["D0", data.D[0]],
-        ["LSC1", data.C[1]],
-        ["LSD1", data.D[1]],
-        ["E1", data.E[0]],
-        ["PC21", data.ki[0]],
-        ["EXor1", data.EXor[0]],
-        ["P1", data.F[0]]
+        ["L16", data.R[15]],
+        ["R16", data.L[15]],
+        ["fin", data.y],
+        
     ]
-    for (let i = 0; i < 8; i++) {
-        mapping.push([`s1${i+1}`, data.S[1][i]])
+    for (let i = 0; i < 16; i++) {
+        mapping.push([`L${i}`, data.L[i]]);
+        mapping.push([`R${i}`, data.R[i]]);
+        mapping.push([`C${i}`, data.C[i]]);
+        mapping.push([`D${i}`, data.D[i]]);
+        mapping.push([`LSC${i+1}`, data.C[i+1]]);
+        mapping.push([`LSD${i+1}`, data.D[i+1]]);
+        mapping.push([`E${i+1}`, data.E[i]]);
+        mapping.push([`PC2${i+1}`, data.ki[i]]);
+        mapping.push([`EXor${i+1}`, data.EXor[i]]);
+        mapping.push([`P${i+1}`, data.F[i]]);
+        for (let j = 0; j < 8; j++) {
+            mapping.push([`s${i+1}${j+1}`, data.S[j][i]])
+        }
     }
+    
     for (let i = 0; i < mapping.length; i++) {
         d3.select(`#tab_${mapping[i][0]}`).text(mapping[i][1])    
     }

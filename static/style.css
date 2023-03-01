@@ -4,6 +4,20 @@ table, tr, th, td {
     text-align: center;
 }
 
+th, td {
+    padding-left: 5px;
+    padding-right: 5px;
+    min-width: 20px;
+}
+
 .vertCell {
-    transform: rotate(-90deg);
+    writing-mode:sideways-lr
+}
+
+table {
+    table-layout: fixed;
+}
+
+.inProc {
+    color: var(--blue);
 }
