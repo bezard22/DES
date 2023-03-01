@@ -137,8 +137,12 @@ class DES:
         return val
 
     def transform(self, ci, di):
-        ci = ci[0:] + ci[0]
-        di = di[0:] + di[0]
+        ciEnd = ci[0]
+        diEnd = di[0]
+        ci = ci[1:]
+        di = di[1:]
+        ci.append(BitArray(bin='1' if ciEnd else '0'))
+        di.append(BitArray(bin='1' if diEnd else '0'))
         self.data["C"].append(ci.hex)
         self.data["D"].append(di.hex)
         return self.PC2(ci + di)
@@ -188,9 +192,12 @@ class DES:
         self.data["R"].append(ri.hex)
         return ri + (li ^ self.F(ri, ki))
 
-    def FP(self, z):
+    def FP(self, z, decrypt=False):
         val = BitArray([z[i - 1] for i in self.data["perm"]["FP"]])
-        self.data["y"] = val.hex
+        if decrypt:
+            self.data["x"] = val.hex
+        else:
+            self.data["y"] = val.hex
         return val
 
     def encrypt(self, x, k):
@@ -202,24 +209,32 @@ class DES:
             zi = self.desRound(zi, kis[i])
         return self.FP(zi[32:] + zi[:32])
 
-    def decrypt(y, k):
-        pass
+    def decrypt(self, y, k):
+        self.data["y"] = x.hex
+        self.data["k"] = k.hex
+        zi = self.IP(x)
+        kis = self.keySchedule(k)
+        kis = kis[::-1]
+        for i in range(16):
+            zi = self.desRound(zi, kis[i])
+        return self.FP(zi[32:] + zi[:32], decrypt=True)
 
 
 def call(action, encoding, inText, key):
     des = DES()
     if action == "encrypt":
-        x = BitArray(length=64)
-        k = BitArray(length=64)
+        x = BitArray(hex=inText, length=64)
+        k = BitArray(hex=key, length=64)
         des.encrypt(x, k)
     return des.data
 
 if __name__ == "__main__":
-    x = BitArray(length=64)
-    k = BitArray(length=64)
+    x = BitArray(hex="166B40B44ABA4BD6", length=64)
+    k = BitArray(hex="0000000000000001", length=64)
     des = DES()
     try:
-        des.encrypt(x, k)
+        # des.encrypt(x, k)
+        des.decrypt(x, k)
     except Exception as e:
         for k, v in des.data.items():
             if k != "perm":
