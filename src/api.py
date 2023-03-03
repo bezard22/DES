@@ -2,6 +2,9 @@ from bitstring import BitArray
 
 class DES:
     def __init__(self) -> None:
+        self.dataReset()
+
+    def dataReset(self):
         self.data = {
             "x": None,
             "k": None,
@@ -136,16 +139,24 @@ class DES:
         self.data["ki"].append(val.hex)
         return val
 
-    def transform(self, ci, di):
-        ciEnd = ci[0]
-        diEnd = di[0]
-        ci = ci[1:]
-        di = di[1:]
-        ci.append(BitArray(bin='1' if ciEnd else '0'))
-        di.append(BitArray(bin='1' if diEnd else '0'))
+    def transform(self, ci, di, i):
+        if i in [0, 1, 8, 15]:
+            ciEnd = ci[:1]
+            diEnd = di[:1]
+            ci = ci[1:]
+            di = di[1:]
+            ci.append(ciEnd)
+            di.append(diEnd)
+        else:
+            ciEnd = ci[:2]
+            diEnd = di[:2]
+            ci = ci[2:]
+            di = di[2:]
+            ci.append(ciEnd)
+            di.append(diEnd)
         self.data["C"].append(ci.hex)
         self.data["D"].append(di.hex)
-        return self.PC2(ci + di)
+        return ci, di, self.PC2(ci + di)
 
     def keySchedule(self, k):
         kPC = self.PC1(k)
@@ -153,7 +164,11 @@ class DES:
         di = kPC[28:]
         self.data["C"].append(ci.hex)
         self.data["D"].append(di.hex)
-        return [self.transform(ci, di) for _ in range(16)]
+        sched = []
+        for i in range(16):
+            ci, di, ki = self.transform(ci, di, i)
+            sched.append(ki)
+        return sched
 
     def IP(self, x):
         val = BitArray([x[i - 1] for i in self.data["perm"]["IP"]])
@@ -201,6 +216,7 @@ class DES:
         return val
 
     def encrypt(self, x, k):
+        self.dataReset()
         self.data["x"] = x.hex
         self.data["k"] = k.hex
         zi = self.IP(x)
@@ -210,9 +226,10 @@ class DES:
         return self.FP(zi[32:] + zi[:32])
 
     def decrypt(self, y, k):
-        self.data["y"] = x.hex
+        self.dataReset()
+        self.data["y"] = y.hex
         self.data["k"] = k.hex
-        zi = self.IP(x)
+        zi = self.IP(y)
         kis = self.keySchedule(k)
         kis = kis[::-1]
         for i in range(16):
