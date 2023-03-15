@@ -33,8 +33,8 @@ function tableFill(data) {
         ["k", data.k],
         ["IP", data.IP],
         ["PC1", data.PC1],
-        ["L16", data.R[15]],
-        ["R16", data.L[15]],
+        ["L16", data.R[16]],
+        ["R16", data.L[16]],
         ["fin", data.y],
         
     ]
